@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,10 @@
 # THE SOFTWARE.
 #
 
-from multiprocessing import Process, Event
+from multiprocessing import set_start_method, Process, Event
+
+# Force Windows multiprocessing behavior on Unix
+set_start_method('spawn', force=True)
 
 
 class StoppableProcess(Process):

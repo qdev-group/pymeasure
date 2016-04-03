@@ -1,5 +1,5 @@
 ####################
-pymeasure.experiment
+Keithley instruments
 ####################
 
 This section contains specific documentation on the classes and methods of the package.
@@ -7,8 +7,5 @@ This section contains specific documentation on the classes and methods of the p
 .. toctree::
    :maxdepth: 2
 
-   experiment
-   procedure
-   parameters
-   procedure_thread
-   results
+   keithley2000
+   keithley2400

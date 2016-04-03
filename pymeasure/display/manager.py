@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -130,13 +130,14 @@ class Manager(QtCore.QObject):
     abort_returned = QtCore.QSignal(object)
     log = QtCore.QSignal(object)
 
-    def __init__(self, plot, browser, port=5888, parent=None):
+    def __init__(self, plot, browser, port=5888, log_level=logging.INFO, parent=None):
         super(Manager, self).__init__(parent=parent)
 
         self.experiments = ExperimentQueue()
         self._worker = None
         self._running_experiment = None
         self._monitor = None
+        self.log_level = log_level
         
         self.plot = plot
         self.browser = browser
@@ -208,7 +209,7 @@ class Manager(QtCore.QObject):
                 experiment = self.experiments.next()
                 self._running_experiment = experiment
 
-                self._worker = Worker(experiment.results, port=self.port)
+                self._worker = Worker(experiment.results, port=self.port, log_level=self.log_level)
 
                 self._monitor = Monitor(self._worker.monitor_queue)
                 self._monitor.worker_running.connect(self._running)

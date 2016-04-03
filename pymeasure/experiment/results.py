@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,22 +35,26 @@ import re
 import pandas as pd
 
 
-def unique_filename(directory, prefix='DATA', suffix='', ext='csv', dated_folder=False):
+def unique_filename(directory, prefix='DATA', suffix='', ext='csv', dated_folder=False, index=True, datetimeformat="%Y-%m-%d"):
     """ Returns a unique filename based on the directory and prefix
     """
     now = datetime.now()
     directory = os.path.abspath(directory)
     if dated_folder:
-        directory = os.path.join(directory, now.strftime("%Y-%m-%d"))
+        directory = os.path.join(directory, now.strftime('%Y-%m-%d'))
     if not os.path.exists(directory):
         os.makedirs(directory)
-    i = 1
-    basename = "%s%s" % (prefix, now.strftime("%Y%m%d"))
-    basepath = os.path.join(directory, basename)
-    filename = "%s_%d%s.%s" % (basepath, i, suffix, ext)
-    while os.path.exists(filename):
-        i += 1
+    if index:
+        i = 1
+        basename = "%s%s" % (prefix, now.strftime(datetimeformat))
+        basepath = os.path.join(directory, basename)
         filename = "%s_%d%s.%s" % (basepath, i, suffix, ext)
+        while os.path.exists(filename):
+            i += 1
+            filename = "%s_%d%s.%s" % (basepath, i, suffix, ext)
+    else:
+        basename = "%s%s%s.%s" % (prefix, now.strftime(datetimeformat), suffix, ext)
+        filename = os.path.join(directory, basename)
     return filename
 
 

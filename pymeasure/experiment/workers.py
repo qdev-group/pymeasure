@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ from .listeners import Recorder
 from .results import Results
 from .procedure import Procedure
 from ..log import TopicQueueHandler
+from pymeasure.log import file_log
 
 
 class Worker(StoppableProcess):
@@ -50,7 +51,7 @@ class Worker(StoppableProcess):
     thread, a Recorder is run to write the results to 
     """
 
-    def __init__(self, results, log_queue=None, port=None):
+    def __init__(self, results, log_queue=None, log_level=logging.INFO, port=None):
         """ Constructs a Worker to perform the Procedure 
         defined in the file at the filepath
         """
@@ -60,6 +61,7 @@ class Worker(StoppableProcess):
             raise ValueError("Invalid Results object during Worker construction")
         self.results = results
         self.procedure = self.results.procedure
+        self.procedures_file = self.procedure.__module__
         self.procedure.check_parameters()
         self.procedure.status = Procedure.QUEUED
 
@@ -68,6 +70,7 @@ class Worker(StoppableProcess):
         if log_queue is None:
             log_queue = Queue()
         self.log_queue = log_queue
+        self.log_level = log_level
 
     def join(self, timeout=0):
         try:
@@ -104,6 +107,7 @@ class Worker(StoppableProcess):
     def run(self):
         global log
         log = logging.getLogger()
+        log.setLevel(self.log_level)
         log.handlers = [] # Remove all other handlers
         log.addHandler(TopicQueueHandler(self.monitor_queue))
         log.addHandler(QueueHandler(self.log_queue))
@@ -112,7 +116,9 @@ class Worker(StoppableProcess):
         self.recorder = Recorder(self.results, self.recorder_queue)
         self.recorder.start()
 
-        # route Procedure methods
+        locals()[self.procedures_file] = __import__(self.procedures_file)
+
+        # route Procedure methods & log
         self.procedure.should_stop = self.should_stop
         self.procedure.emit = self.emit
 

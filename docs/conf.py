@@ -46,7 +46,7 @@ extensions = [
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.txt'
+source_suffix = '.rst'
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PyMeasure'
-copyright = u'2013-2015, Colin Jermain, Graham Rowlands'
+copyright = u'2013-2016, Colin Jermain, Graham Rowlands'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -120,6 +120,7 @@ class ManagedWindow(QtGui.QMainWindow):
         self.displays = displays
 
         self.log = logging.getLogger(log_channel)
+        self.log_level = log_level
         log.setLevel(log_level)
         self.log.setLevel(log_level)
         self.x_axis, self.y_axis = x_axis, y_axis
@@ -168,7 +169,7 @@ class ManagedWindow(QtGui.QMainWindow):
             parent=self
         )
 
-        self.manager = Manager(self.plot, self.browser, parent=self)
+        self.manager = Manager(self.plot, self.browser, log_level=self.log_level, parent=self)
         self.manager.abort_returned.connect(self.abort_returned)
         self.manager.queued.connect(self.queued)
         self.manager.running.connect(self.running)

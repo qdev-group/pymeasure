@@ -1,7 +1,7 @@
 #
 # This file is part of the PyMeasure package.
 #
-# Copyright (c) 2013-2015 Colin Jermain, Graham Rowlands
+# Copyright (c) 2013-2016 Colin Jermain, Graham Rowlands
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,10 @@
 #
 
 from .parameters import (Parameter, IntegerParameter, FloatParameter,
-                        VectorParameter, ListParameter, BooleanParameter)
+                        VectorParameter, ListParameter, BooleanParameter, Measurable)
 from .procedure import Procedure, UnknownProcedure
 from .results import Results, unique_filename
 from .workers import Worker
 from .listeners import Listener, Recorder
+from .config import get_config
+from .experiment import Experiment, get_array, get_array_steps, get_array_zero
