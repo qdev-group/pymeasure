@@ -102,17 +102,32 @@ class ManagedWindow(QtGui.QMainWindow):
     EDITOR = 'gedit'
 
     def __init__(self, procedure_class, inputs=[], displays=[], x_axis=None, y_axis=None, log_channel='', log_level=logging.INFO, parent=None):
+        
+        #this stuff is boiler plate for using pyQtgraph, don't think about it too hard
         super(ManagedWindow, self).__init__(parent=parent)
         app = QtCore.QCoreApplication.instance()
+
+        #To ensure that we call the exit subroutines if we close the window
         app.aboutToQuit.connect(self.quit)
+
         self.procedure_class = procedure_class
+
+        #I guess we can invoke inputs if we wanted to when we instantiate the class
+        #but the example does this by overwriting any inputs associated with instantiation
         self.inputs = inputs
+
+        #What we will show in the queue/manager box
         self.displays = displays
+
         self.log = logging.getLogger(log_channel)
         log.setLevel(log_level)
         self.log.setLevel(log_level)
         self.x_axis, self.y_axis = x_axis, y_axis
+
+        #connect signals to slots with _setup_ui()
         self._setup_ui()
+
+        #actually layout all of the relevant widgets with _layout()
         self._layout()
 
     def _setup_ui(self):
@@ -127,6 +142,7 @@ class ManagedWindow(QtGui.QMainWindow):
         self.abort_button.setEnabled(False)
         self.abort_button.clicked.connect(self.abort)
 
+        #evidently the procedure class MUST implement a DATA_COLUMNS
         self.plot_widget = PlotWidget(self.procedure_class.DATA_COLUMNS, self.x_axis, self.y_axis)
         self.plot = self.plot_widget.plot
 
