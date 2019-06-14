@@ -71,6 +71,12 @@ class SR830(Instrument):
     x = Instrument.measurement("OUTP?1",
         """ Reads the X value in Volts. """
     )
+    channel_1_read = Instrument.measurement("OUTR?1",
+        """ Reads channel 1 """
+    )
+    channel_2_read = Instrument.measurement("OUTR?2",
+        """ Reads channel 2 """
+    )
     y = Instrument.measurement("OUTP?2",
         """ Reads the Y value in Volts. """
     )
