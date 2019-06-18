@@ -1,4 +1,4 @@
-#
+# Kirsten editing... test
 # This file is part of the PyMeasure package.
 #
 # Copyright (c) 2013-2019 PyMeasure Developers
