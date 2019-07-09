@@ -47,12 +47,7 @@ class Keithley2182(Instrument, KeithleyBuffer):
 
     """
     MODES = {
-        'current':'CURR:DC', 'current ac':'CURR:AC',
-        'voltage':'VOLT:DC', 'voltage ac':'VOLT:AC',
-        'resistance':'RES', 'resistance 4W':'FRES',
-        'period':'PER', 'frequency':'FREQ',
-        'temperature':'TEMP', 'diode':'DIOD',
-        'continuity':'CONT'
+        'voltage':'VOLT','temperature':'TEMP'
     }
 
     mode = Instrument.control(
@@ -78,82 +73,14 @@ class Keithley2182(Instrument, KeithleyBuffer):
         map_values=True
     )
 
+    
     ###############
-    # Current (A) #
+    # Settings    #
     ###############
-
-    current = Instrument.measurement(":READ?",
-        """ Reads a DC or AC current measurement in Amps, based on the
-        active :attr:`~.Keithley2000.mode`. """
-    )
-    current_range = Instrument.control(
-        ":SENS:CURR:RANG?", ":SENS:CURR:RANG:AUTO 0;:SENS:CURR:RANG %g",
-        """ A floating point property that controls the DC current range in
-        Amps, which can take values from 0 to 3.1 A.
-        Auto-range is disabled when this property is set. """,
-        validator=truncated_range,
-        values=[0, 3.1]
-    )
-    current_reference = Instrument.control(
-        ":SENS:CURR:REF?", ":SENS:CURR:REF %g",
-        """ A floating point property that controls the DC current reference
-        value in Amps, which can take values from -3.1 to 3.1 A. """,
-        validator=truncated_range,
-        values=[-3.1, 3.1]
-    )
-    current_nplc = Instrument.control(
-        ":SENS:CURR:NPLC?", ":SENS:CURR:NPLC %g",
-        """ A floating point property that controls the number of power line cycles
-        (NPLC) for the DC current measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
-        Fast, Medium, and Slow respectively. """
-    )
-    current_digits = Instrument.control(
-        ":SENS:CURR:DIG?", ":SENS:CURR:DIG %d",
-        """ An integer property that controls the number of digits in the DC current
-        readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int,
-    )
-    current_ac_range = Instrument.control(
-        ":SENS:CURR:AC:RANG?", ":SENS:CURR:AC:RANG:AUTO 0;:SENS:CURR:AC:RANG %g",
-        """ A floating point property that controls the AC current range in
-        Amps, which can take values from 0 to 3.1 A.
-        Auto-range is disabled when this property is set. """,
-        validator=truncated_range,
-        values=[0, 3.1]
-    )
-    current_ac_reference = Instrument.control(
-        ":SENS:CURR:AC:REF?", ":SENS:CURR:AC:REF %g",
-        """ A floating point property that controls the AC current reference
-        value in Amps, which can take values from -3.1 to 3.1 A. """,
-        validator=truncated_range,
-        values=[-3.1, 3.1]
-    )
-    current_ac_nplc = Instrument.control(
-        ":SENS:CURR:AC:NPLC?", ":SENS:CURR:AC:NPLC %g",
-        """ A floating point property that controls the number of power line cycles
-        (NPLC) for the AC current measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
-        Fast, Medium, and Slow respectively. """
-    )
-    current_ac_digits = Instrument.control(
-        ":SENS:CURR:AC:DIG?", ":SENS:CURR:AC:DIG %d",
-        """ An integer property that controls the number of digits in the AC current
-        readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-    current_ac_bandwidth = Instrument.control(
-        ":SENS:CURR:AC:DET:BAND?", ":SENS:CURR:AC:DET:BAND %g",
-        """ A floating point property that sets the AC current detector
-        bandwidth in Hz, which can take the values 3, 30, and 300 Hz. """,
-        validator=truncated_discrete_set,
-        values=[3, 30, 300]
-    )
-
+    
+    linesync_on = Instrument.control(":SYST:LSYNC ON")
+    linesync_off = Instrument.control(":SYST:LSYNC OFF")
+    
     ###############
     # Voltage (V) #
     ###############
@@ -191,192 +118,6 @@ class Keithley2182(Instrument, KeithleyBuffer):
         validator=truncated_discrete_set,
         values=[4, 5, 6, 7],
         cast=int
-    )
-    voltage_ac_range = Instrument.control(
-        ":SENS:VOLT:AC:RANG?", ":SENS:VOLT:RANG:AUTO 0;:SENS:VOLT:AC:RANG %g",
-        """ A floating point property that controls the AC voltage range in
-        Volts, which can take values from 0 to 757.5 V.
-        Auto-range is disabled when this property is set. """,
-        validator=truncated_range,
-        values=[0, 757.5]
-    )
-    voltage_ac_reference = Instrument.control(
-        ":SENS:VOLT:AC:REF?", ":SENS:VOLT:AC:REF %g",
-        """ A floating point property that controls the AC voltage reference
-        value in Volts, which can take values from -757.5 to 757.5 Volts. """,
-        validator=truncated_range,
-        values=[-757.5, 757.5]
-    )
-    voltage_ac_nplc = Instrument.control(
-        ":SENS:VOLT:AC:NPLC?", ":SENS:VOLT:AC:NPLC %g",
-        """ A floating point property that controls the number of power line cycles
-        (NPLC) for the AC voltage measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
-        Fast, Medium, and Slow respectively. """
-    )
-    voltage_ac_digits = Instrument.control(
-        ":SENS:VOLT:AC:DIG?", ":SENS:VOLT:AC:DIG %d",
-        """ An integer property that controls the number of digits in the AC voltage
-        readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-    voltage_ac_bandwidth = Instrument.control(
-        ":SENS:VOLT:AC:DET:BAND?", ":SENS:VOLT:AC:DET:BAND %g",
-        """ A floating point property that sets the AC voltage detector
-        bandwidth in Hz, which can take the values  3, 30, and 300 Hz. """,
-        validator=truncated_discrete_set,
-        values=[3, 30, 300]
-    )
-
-    ####################
-    # Resistance (Ohm) #
-    ####################
-
-    resistance = Instrument.measurement(":READ?",
-        """ Reads a resistance measurement in Ohms for both 2-wire and 4-wire
-        configurations, based on the active :attr:`~.Keithley2000.mode`. """
-    )
-    resistance_range = Instrument.control(
-        ":SENS:RES:RANG?", ":SENS:RES:RANG:AUTO 0;:SENS:RES:RANG %g",
-        """ A floating point property that controls the 2-wire resistance range
-        in Ohms, which can take values from 0 to 120 MOhms.
-        Auto-range is disabled when this property is set. """,
-        validator=truncated_range,
-        values=[0, 120e6]
-    )
-    resistance_reference = Instrument.control(
-        ":SENS:RES:REF?", ":SENS:RES:REF %g",
-        """ A floating point property that controls the 2-wire resistance
-        reference value in Ohms, which can take values from 0 to 120 MOhms. """,
-        validator=truncated_range,
-        values=[0, 120e6]
-    )
-    resistance_nplc = Instrument.control(
-        ":SENS:RES:NPLC?", ":SENS:RES:NPLC %g",
-        """ A floating point property that controls the number of power line cycles
-        (NPLC) for the 2-wire resistance measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
-        Fast, Medium, and Slow respectively. """
-    )
-    resistance_digits = Instrument.control(
-        ":SENS:RES:DIG?", ":SENS:RES:DIG %d",
-        """ An integer property that controls the number of digits in the 2-wire
-        resistance readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-    resistance_4W_range = Instrument.control(
-        ":SENS:FRES:RANG?", ":SENS:FRES:RANG:AUTO 0;:SENS:FRES:RANG %g",
-        """ A floating point property that controls the 4-wire resistance range
-        in Ohms, which can take values from 0 to 120 MOhms.
-        Auto-range is disabled when this property is set. """,
-        validator=truncated_range,
-        values=[0, 120e6]
-    )
-    resistance_4W_reference = Instrument.control(
-        ":SENS:FRES:REF?", ":SENS:FRES:REF %g",
-        """ A floating point property that controls the 4-wire resistance
-        reference value in Ohms, which can take values from 0 to 120 MOhms. """,
-        validator=truncated_range,
-        values=[0, 120e6]
-    )
-    resistance_4W_nplc = Instrument.control(
-        ":SENS:FRES:NPLC?", ":SENS:FRES:NPLC %g",
-        """ A floating point property that controls the number of power line cycles
-        (NPLC) for the 4-wire resistance measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
-        Fast, Medium, and Slow respectively. """
-    )
-    resistance_4W_digits = Instrument.control(
-        ":SENS:FRES:DIG?", ":SENS:FRES:DIG %d",
-        """ An integer property that controls the number of digits in the 4-wire
-        resistance readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-
-    ##################
-    # Frequency (Hz) #
-    ##################
-
-    frequency = Instrument.measurement(":READ?",
-        """ Reads a frequency measurement in Hz, based on the
-        active :attr:`~.Keithley2000.mode`. """
-    )
-    frequency_reference = Instrument.control(
-        ":SENS:FREQ:REF?", ":SENS:FREQ:REF %g",
-        """ A floating point property that controls the frequency reference
-        value in Hz, which can take values from 0 to 15 MHz. """,
-        validator=truncated_range,
-        values=[0, 15e6]
-    )
-    frequency_digits = Instrument.control(
-        ":SENS:FREQ:DIG?", ":SENS:FREQ:DIG %d",
-        """ An integer property that controls the number of digits in the frequency
-        readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-    frequency_threshold = Instrument.control(
-        ":SENS:FREQ:THR:VOLT:RANG?", ":SENS:FREQ:THR:VOLT:RANG %g",
-        """ A floating point property that controls the voltage signal threshold
-        level in Volts for the frequency measurement, which can take values
-        from 0 to 1010 V. """,
-        validator=truncated_range,
-        values=[0, 1010]
-    )
-    frequency_aperature = Instrument.control(
-        ":SENS:FREQ:APER?", ":SENS:FREQ:APER %g",
-        """ A floating point property that controls the frequency aperature in seconds,
-        which sets the integration period and measurement speed. Takes values
-        from 0.01 to 1.0 s. """,
-        validator=truncated_range,
-        values=[0.01, 1.0]
-    )
-
-    ##############
-    # Period (s) #
-    ##############
-
-    period = Instrument.measurement(":READ?",
-        """ Reads a period measurement in seconds, based on the
-        active :attr:`~.Keithley2000.mode`. """
-    )
-    period_reference = Instrument.control(
-        ":SENS:PER:REF?", ":SENS:PER:REF %g",
-        """ A floating point property that controls the period reference value
-        in seconds, which can take values from 0 to 1 s. """,
-        validator=truncated_range,
-        values=[0, 1]
-    )
-    period_digits = Instrument.control(
-        ":SENS:PER:DIG?", ":SENS:PER:DIG %d",
-        """ An integer property that controls the number of digits in the period
-        readings, which can take values from 4 to 7. """,
-        validator=truncated_discrete_set,
-        values=[4, 5, 6, 7],
-        cast=int
-    )
-    period_threshold = Instrument.control(
-        ":SENS:PER:THR:VOLT:RANG?", ":SENS:PRE:THR:VOLT:RANG %g",
-        """ A floating point property that controls the voltage signal threshold
-        level in Volts for the period measurement, which can take values
-        from 0 to 1010 V. """,
-        validator=truncated_range,
-        values=[0, 1010]
-    )
-    period_aperature = Instrument.control(
-        ":SENS:PER:APER?", ":SENS:PER:APER %g",
-        """ A floating point property that controls the period aperature in seconds,
-        which sets the integration period and measurement speed. Takes values
-        from 0.01 to 1.0 s. """,
-        validator=truncated_range,
-        values=[0.01, 1.0]
     )
 
     ###################
