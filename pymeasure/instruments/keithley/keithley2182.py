@@ -54,8 +54,7 @@ class Keithley2182(Instrument, KeithleyBuffer):
         ":CONF?", ":CONF:%s",
         """ A string property that controls the configuration mode for measurements,
         which can take the values: :code:'current' (DC), :code:'current ac',
-        :code:'voltage' (DC),  :code:'voltage ac', :code:'resistance' (2-wire),
-        :code:'resistance 4W' (4-wire), :code:'period', :code:'frequency',
+        :code:'voltage' (DC),  :code:'voltage ac', :code:'period', :code:'frequency',
         :code:'temperature', :code:'diode', and :code:'frequency'. """,
         validator=strict_discrete_set,
         values=MODES,
@@ -92,10 +91,19 @@ class Keithley2182(Instrument, KeithleyBuffer):
     voltage_range = Instrument.control(
         ":SENS:VOLT:RANG?", ":SENS:VOLT:RANG:AUTO 0;:SENS:VOLT:RANG %g",
         """ A floating point property that controls the DC voltage range in
-        Volts, which can take values from 0 to 1010 V.
+        Volts, which can take values from 0 to 120 V.
         Auto-range is disabled when this property is set. """,
         validator=truncated_range,
-        values=[0, 1010]
+        values=[0, 120]
+    )
+    
+    voltage_range_ch2 = Instrument.control(
+        ":SENS:VOLT:CHAN2:RANG?", ":SENS:VOLT:CHAN2:RANG:AUTO 0;:SENS:VOLT:CHAN2:RANG %g",
+        """ A floating point property that controls the DC voltage range in
+        Volts, which can take values from 0 to 12 V.
+        Auto-range is disabled when this property is set. """,
+        validator=truncated_range,
+        values=[0, 12]
     )
     voltage_reference = Instrument.control(
         ":SENS:VOLT:REF?", ":SENS:VOLT:REF %g",
@@ -105,11 +113,15 @@ class Keithley2182(Instrument, KeithleyBuffer):
         values=[-1010, 1010]
     )
     voltage_nplc = Instrument.control(
-        ":SENS:CURRVOLT:NPLC?", ":SENS:VOLT:NPLC %g",
+        ":SENS:VOLT:NPLC?", ":SENS:VOLT:NPLC %g",
         """ A floating point property that controls the number of power line cycles
         (NPLC) for the DC voltage measurements, which sets the integration period
-        and measurement speed. Takes values from 0.01 to 10, where 0.1, 1, and 10 are
+        and measurement speed. Takes values from 0.01 to 50, where 0.1, 1, and 5 are
         Fast, Medium, and Slow respectively. """
+    )
+    voltage_aper = Instrument.control(
+        ":SENS:VOLT:APER?", ":SENS:VOLT:APER %g",
+        """Specify integration rate in seconds: 166.67μsec to 1 sec (60Hz) where the optimal is between 16.67ms and 83.33ms"""
     )
     voltage_digits = Instrument.control(
         ":SENS:VOLT:DIG?", ":SENS:VOLT:DIG %d",
@@ -119,7 +131,42 @@ class Keithley2182(Instrument, KeithleyBuffer):
         values=[4, 5, 6, 7],
         cast=int
     )
-
+    
+    ####################
+    ###Voltage Filter###
+    ####################
+    
+    voltage_analongfilter = Instrument.control(
+        ":SENSE:VOLT:CHAN1:LANG?", ":SENSE:VOLT:CHAN1:LANG %s",
+        """Turns on and off the analog filter for channel 1. The Analog Filter attenuates frequency at 
+        20dB/decade starting at 18Hz. This adds 125ms to measurement time"""
+    )
+    voltage_analongfilter_ch2 = Instrument.control(
+        ":SENSE:VOLT:CHAN2:LANG?", ":SENSE:VOLT:CHAN2:LANG %s",
+        """Turns ON and OFF the analog filter for channel 1. The Analog Filter attenuates frequency at 
+        20dB/decade starting at 18Hz. This adds 125ms to measurement time""",
+        values = {'ON','OFF'}
+    )
+    voltage_digitalfilter_status = Instrument.control(
+        ":SENSE:VOLT:CHAN1:DFIL:STAT?", ":SENSE:VOLT:CHAN1:DFIL:STAT %s",
+        """Turns ON and OFF the digital filter for channel 1. Note that changes made to the digital filter settings will 
+        immediatly come into effect if filter is on. If off changes will take effect when turned on.""",
+        values = {'ON','OFF'}
+    )
+    voltage_digitalfilter_window = Instrument.control(
+        ":SENSE:VOLT:CHAN1:DFIL:WIND?", ":SENSE:VOLT:CHAN1:DFIL:WIND %g"
+        """Specifies window of filter in percent where values can be anything between 0 and 10."""
+    )
+    voltage_digitalfilter_count = Instrument.control(
+        ":SENSE:VOLT:CHAN1:DFIL:COUN?", ":SENSE:VOLT:CHAN1:DFIL:COUN %g"
+        """Specifies filter count from 1 to 100, default is 10."""
+    )
+    voltage_digitalfilter_type = Instrument.control(
+        ":SENSE:VOLT:CHAN1:DFIL:TCON?", ":SENSE:VOLT:CHAN1:DFIL:TCON %s"
+        """Specifies filter count from 1 to 100, default is 10.""",
+        values = {'MOV', 'REP'}
+    )
+    
     ###################
     # Temperature (C) #
     ###################
