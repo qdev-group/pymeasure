@@ -155,16 +155,14 @@ class Keithley2182(Instrument, KeithleyBuffer):
     )
     voltage_digitalfilter_window = Instrument.control(
         ":SENSE:VOLT:CHAN1:DFIL:WIND?", ":SENSE:VOLT:CHAN1:DFIL:WIND %g",
-        """Turns ON and OFF the digital filter for channel 1. Note that changes made to the digital filter settings will 
-        immediatly come into effect if filter is on. If off changes will take effect when turned on.""",
-        values = {'ON','OFF'}
+        """Sets the window size for the digital filter."""
     )
     voltage_digitalfilter_count = Instrument.control(
-        ":SENSE:VOLT:CHAN1:DFIL:COUN?", ":SENSE:VOLT:CHAN1:DFIL:COUN %g"
+        ":SENSE:VOLT:CHAN1:DFIL:COUN?", ":SENSE:VOLT:CHAN1:DFIL:COUN %g",
         """Specifies filter count from 1 to 100, default is 10."""
     )
     voltage_digitalfilter_type = Instrument.control(
-        ":SENSE:VOLT:CHAN1:DFIL:TCON?", ":SENSE:VOLT:CHAN1:DFIL:TCON %s"
+        ":SENSE:VOLT:CHAN1:DFIL:TCON?", ":SENSE:VOLT:CHAN1:DFIL:TCON %s",
         """Specifies filter count from 1 to 100, default is 10.""",
         values = {'MOV', 'REP'}
     )
