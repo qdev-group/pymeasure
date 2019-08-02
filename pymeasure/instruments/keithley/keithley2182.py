@@ -77,8 +77,8 @@ class Keithley2182(Instrument, KeithleyBuffer):
     # Settings    #
     ###############
     
-    linesync_on = Instrument.control(":SYST:LSYNC ON")
-    linesync_off = Instrument.control(":SYST:LSYNC OFF")
+    #linesync_on = Instrument.control(":SYST:LSYNC ON")
+    #linesync_off = Instrument.control(":SYST:LSYNC OFF")
     
     ###############
     # Voltage (V) #
