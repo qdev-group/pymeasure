@@ -16,7 +16,7 @@ class TritonLakeshore():
         edsPORT = 33576
         MESSAGE = b'SET:DEV:UID:TEMP:MEAS:ENAB:\r\n'
 
-        srvsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.srvsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.srvsock.settimeout(20) # 3 second timeout on commands
         self.srvsock.connect((edsIP, edsPORT))
 
