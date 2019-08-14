@@ -40,8 +40,5 @@ class TritonLakeshore(Instrument):
         data = srvsock.recv(4096)
         return (data)
 
-    def loop_off_T8(self)
-
-
 
 
