@@ -42,8 +42,5 @@ class TritonLakeshore():
         self.srvsock.sendall(b'READ:DEV:T5:TEMP:SIG:TEMP\r\n')
         data = self.srvsock.recv(4096)
         return (data)
-    
-    def set_temp_T8(self,settemp)
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:settemp')
 
 
