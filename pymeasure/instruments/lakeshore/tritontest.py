@@ -20,8 +20,8 @@ class TritonLakeshore():
     def initalize_measure_T8(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:ON\r\n')
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:MEAS:ENAB:ON\r\n')
-        data = self.srvsock.recv(4096)
-        return(data)
+        data2 = self.srvsock.recv(4096)
+        return(data2)
         
     def get_temp_T8(self):
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
