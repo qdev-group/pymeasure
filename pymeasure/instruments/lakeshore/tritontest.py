@@ -34,4 +34,5 @@ class TritonLakeshore():
     def get_temp_T5(self):
         self.srvsock.sendall(b'READ:DEV:T5:TEMP:SIG:TEMP\r\n')
         data = self.srvsock.recv(4096)
+        data = float(data[26:-2])
         return (data)
