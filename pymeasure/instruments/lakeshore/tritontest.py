@@ -21,18 +21,32 @@ class TritonLakeshore():
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:ON\r\n')
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:MEAS:ENAB:ON\r\n')
         data2 = self.srvsock.recv(4096)
+        self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         return(data2)
         
     def get_temp_T8(self):
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         data = self.srvsock.recv(4096)
+        data = float(data[26:-2])
         return (data)
-    
-    def get_temp_T8_test(self):
-        self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         
     def get_temp_T5(self):
         self.srvsock.sendall(b'READ:DEV:T5:TEMP:SIG:TEMP\r\n')
         data = self.srvsock.recv(4096)
         data = float(data[26:-2])
         return (data)
+    
+    def set_temp_T8(self,tset)
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:tset')
+        
+    def set_temp_T8_wait(self,tset,delta)
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:tset')
+        self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
+        temp = self.srvsock.recv(4096)
+        temp = float(data[26:-2])
+        if temp < tset-delta or temp > tset+delta
+            sleep(5)
+            self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
+            temp = self.srvsock.recv(4096)
+            temp = float(temp[26:-2])
+        sleep(60)
