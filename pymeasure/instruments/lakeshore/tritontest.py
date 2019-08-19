@@ -39,12 +39,12 @@ class TritonLakeshore():
     def set_temp_T8(self,tset):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:{}\r\n'.format(tset))
         
-    def set_temp_T8_wait(self,tset,delta):
+    def set_temp_T8_wait(self,tset,delta = 0.01):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:{}\r\n'.format(tset))
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         temp = self.srvsock.recv(4096)
         temp = float(data[26:-2])
-        if temp < tset-delta or temp > tset+delta
+        if (temp < tset-delta or temp > tset+delta):
             sleep(5)
             self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
             temp = self.srvsock.recv(4096)
