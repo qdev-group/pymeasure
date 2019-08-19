@@ -36,10 +36,10 @@ class TritonLakeshore():
         data = float(data[26:-2])
         return (data)
     
-    def set_temp_T8(self,tset)
+    def set_temp_T8(self,tset):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:{}\r\n'.format(tset))
         
-    def set_temp_T8_wait(self,tset,delta)
+    def set_temp_T8_wait(self,tset,delta):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:{}\r\n'.format(tset))
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         temp = self.srvsock.recv(4096)
