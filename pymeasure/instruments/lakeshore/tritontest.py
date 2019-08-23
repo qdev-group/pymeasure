@@ -23,7 +23,10 @@ class TritonLakeshore():
         data2 = self.srvsock.recv(4096)
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         return(data2)
-        
+    
+    def get_temp_T8_test(self):
+        self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
+    
     def get_temp_T8(self):
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         data = self.srvsock.recv(4096)
