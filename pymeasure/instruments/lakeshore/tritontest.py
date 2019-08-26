@@ -1,5 +1,9 @@
 """
-This driver is used to controll and measure the temperature via the Lakeshore 370 using the Triton controll software
+This driver is used to controll and measure the temperature via the Lakeshore 370 using the Triton controll software.
+
+Users must understand how to control the fridge as this program does not switch thermometers or sensors. Additional 
+precautions must be taken if scanning above 2K. Look at 5-14 in the oxford manual.
+
 """
 import time
 import socket
