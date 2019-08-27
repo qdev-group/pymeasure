@@ -68,10 +68,10 @@ class TritonLakeshore():
     def set_ramprate(self,ramprate):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:{}\r\n'.format(ramprate))
     
-    def set_ramp_on(self)
+    def set_ramp_on(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:ON\r\n')
         
-    def set_ramp_off(self)
+    def set_ramp_off(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:OFF\r\n')
         
     ### Multi step functions ###
