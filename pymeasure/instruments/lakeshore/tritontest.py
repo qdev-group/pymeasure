@@ -127,7 +127,7 @@ class TritonLakeshore():
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:0\r\n')
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:OFF\r\n')
         
-   def intialize_temp_swp(self,tempi,ramprate,hrt):
+   def init_temp_swp(self,tempi,ramprate,hrt):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:OFF\r\n')
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:{}\r\n'.format(tempi))
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:{}\r\n'.format(ramprate))
