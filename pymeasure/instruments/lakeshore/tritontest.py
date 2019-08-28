@@ -50,20 +50,25 @@ class TritonLakeshore():
         
     def get_sweeprate(self): #Temperature sweep rate, to use must also turn on the rate#
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:RAMP:RATE\r\n')
+        data = self.srvsock.recv(4096)
         
         ### Set Functions ###
         
     def set_temp_channel(self,channel): #used to manually change the channel used in the PID feedback loop, this will automatically change at 1.2 to the channel 5#
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:LOOP:CHAN:%a\r\n' % channel )
+        data = self.srvsock.recv(4096)
 
     def set_PID_on(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:ON\r\n')
+        data = self.srvsock.recv(4096)
     
     def set_PID_off(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:OFF\r\n')
+        data = self.srvsock.recv(4096)
     
     def set_heater_range(self,htrrange):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:%a\r\n' % htrrange )
+        data = self.srvsock.recv(4096)
         
     def set_temp(self,tset):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tset )
@@ -71,12 +76,15 @@ class TritonLakeshore():
         
     def set_ramprate(self,ramprate):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:%a\r\n' % ramprate )
+        data = self.srvsock.recv(4096)
     
     def set_ramp_on(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:ON\r\n')
+        data = self.srvsock.recv(4096)
         
     def set_ramp_off(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:OFF\r\n')
+        data = self.srvsock.recv(4096)
         
     ### Multi step functions ###
     
