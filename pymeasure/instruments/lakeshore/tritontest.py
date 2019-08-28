@@ -67,6 +67,7 @@ class TritonLakeshore():
         
     def set_temp(self,tset):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tset )
+        self.srvsock.recv(4096)
         
     def set_ramprate(self,ramprate):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:%a\r\n' % ramprate )
