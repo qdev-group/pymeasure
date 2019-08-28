@@ -44,6 +44,9 @@ class TritonLakeshore():
     
     def get_tset_T8(self): #This will get the temperature set point#
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:LOOP:TSET\r\n')
+        data = self.srvsock.recv(4096)
+        data = float(data[26:-2])
+        return (data)
         
     def get_sweeprate(self): #Temperature sweep rate, to use must also turn on the rate#
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:RAMP:RATE\r\n')
