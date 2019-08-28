@@ -51,7 +51,7 @@ class TritonLakeshore():
         ### Set Functions ###
         
     def set_temp_channel(self,channel): #used to manually change the channel used in the PID feedback loop, this will automatically change at 1.2 to the channel 5#
-        self.srvsock.sendall(b'READ:DEV:T8:TEMP:LOOP:CHAN:{}\r\n'.format(channel))
+        self.srvsock.sendall(b'READ:DEV:T8:TEMP:LOOP:CHAN:%a\r\n' % channel )
 
     def set_PID_on(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:ON\r\n')
@@ -60,13 +60,13 @@ class TritonLakeshore():
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:OFF\r\n')
     
     def set_heater_range(self,htrrange):
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:{}\r\n'.format(htrrange))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:%a\r\n' % htrrange )
         
     def set_temp(self,tset):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tset )
         
     def set_ramprate(self,ramprate):
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:{}\r\n'.format(ramprate))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:%a\r\n' % ramprate )
     
     def set_ramp_on(self):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:ON\r\n')
@@ -95,7 +95,7 @@ class TritonLakeshore():
             print('Switch off the turbo, switch off the still heater, close V9, open V4, change channel to T5')
         
     def set_temp_wait_1(self,tset,delta = 0.01):
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:{}\r\n'.format(tset))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tset )
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         temp = self.srvsock.recv(4096)
         temp = float(data[26:-2])
@@ -107,7 +107,7 @@ class TritonLakeshore():
         sleep(60)
         
     def set_temp_wait_2(self,tset,delta = 0.01):
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:{}\r\n'.format(tset))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tset )
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:TEMP\r\n')
         temp1 = self.srvsock.recv(4096)
         temp1 = float(data[26:-2])
@@ -129,10 +129,10 @@ class TritonLakeshore():
         
     def init_temp_swp(self,tempi,ramprate,hrt):
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:OFF\r\n')
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:{}\r\n'.format(tempi))
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:{}\r\n'.format(ramprate))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:TSET:%a\r\n' % tempi )
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:RATE:%a\r\n' % ramprate )
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RAMP:ENAB:ON\r\n')
-        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:{}\r\n'.format(htr))
+        self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:RANGE:%a\r\n' % htr )
         self.srvsock.sendall(b'SET:DEV:T8:TEMP:LOOP:MODE:ON\r\n')
         
         
