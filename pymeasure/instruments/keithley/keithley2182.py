@@ -121,7 +121,10 @@ class Keithley2182(Instrument, KeithleyBuffer):
     )
     voltage_aper = Instrument.control(
         ":SENS:VOLT:APER?", ":SENS:VOLT:APER %g",
-        """Specify integration rate in seconds: 166.67μsec to 1 sec (60Hz) where the optimal is between 16.67ms and 83.33ms"""
+        """ A floating point property that controls the number of power line cycles
+        (NPLC) for the DC voltage measurements, which sets the integration period
+        and measurement speed. Takes values from 0.01 to 50, where 0.1, 1, and 5 are
+        Fast, Medium, and Slow respectively. """
     )
     voltage_digits = Instrument.control(
         ":SENS:VOLT:DIG?", ":SENS:VOLT:DIG %d",
