@@ -220,6 +220,11 @@ class Keithley2182(Instrument, KeithleyBuffer):
         validator=truncated_range,
         values=[0, 999999.999]
     )
+    init_con = Instrument.control(
+        ":INIT:CONT?", ":INIT:CONT: %s",
+        """ A floating point property that controls the trigger delay
+        in seconds, which can take values from 1 to 9,999,999.999 s. """
+    )
 
     def __init__(self, adapter, **kwargs):
         super(Keithley2182, self).__init__(
