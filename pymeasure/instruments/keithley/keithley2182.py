@@ -219,8 +219,8 @@ class Keithley2182(Instrument, KeithleyBuffer):
     )
 
     def __init__(self, adapter, **kwargs):
-        super(Keithley2000, self).__init__(
-            adapter, "Keithley 2000 Multimeter", **kwargs
+        super(Keithley2182, self).__init__(
+            adapter, "Keithley 2182 Nanovoltmeter", **kwargs
         )
         # Set up data transfer format
         if isinstance(self.adapter, VISAAdapter):
