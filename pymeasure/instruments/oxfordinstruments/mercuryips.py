@@ -53,11 +53,11 @@ class Mercuryips():
         data = self.srvsock.recv(4096)
         
     def set_swprate_rate(self,rate,bf):
-        self.srvsock.sendall(b'SET:SYS:VRM:RVST:MODE:RATE:RATE:%a:VSET[0 0 %a]\r\n' % rate bf )
+        self.srvsock.sendall(b'SET:SYS:VRM:RVST:MODE:RATE:RATE:%a:VSET[0 0 %a]\r\n' % rate, bf )
         data = self.srvsock.recv(4096)
         
      def set_swprate_time(self,time,bf):
-        self.srvsock.sendall(b'SET:SYS:VRM:RVST:MODE:TIME:TIME:%a:VSET[0 0 %a]\r\n' % time bf )
+        self.srvsock.sendall(b'SET:SYS:VRM:RVST:MODE:TIME:TIME:%a:VSET[0 0 %a]\r\n' % time, bf )
         data = self.srvsock.recv(4096)
         
     def set_bfield(self,bf):
