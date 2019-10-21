@@ -28,7 +28,7 @@ class Mercuryips():
     def get_Bfield(self): #This will get the magnetic field in xyz coordinates, will output float of z magnetic field#
         self.srvsock.sendall(b'READ:SYS:VRM:VECT\r\n')
         data = self.srvsock.recv(4096)
-        data = float(data[35:-2])
+        data = float(data[35:-3])
         return (data)
     
     def get_swprate(self): #This will get the sweep rate#
