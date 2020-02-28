@@ -81,6 +81,12 @@ class Oxford():
         data = float(data[26:-2])
         return (data)
     
+    def get_res_T8(self):
+        self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:RES\r\n')
+        data = self.srvsock.recv(4096)
+        data = float(data[26:-2])
+        return (data)
+    
     
     def get_temp_T5(self): #This will get the temmperature reading from the Cernox thermometer, for use above 1.2K#
         self.srvsock.sendall(b'READ:DEV:T5:TEMP:SIG:TEMP\r\n')
