@@ -84,7 +84,6 @@ class Oxford():
     def get_res_T8(self):
         self.srvsock.sendall(b'READ:DEV:T8:TEMP:SIG:RES\r\n')
         data = self.srvsock.recv(4096)
-        data = float(data[26:-2])
         return (data)
     
     
